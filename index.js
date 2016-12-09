@@ -2,16 +2,30 @@ var express = require("express");
 
 var app = express();
 
+var UserDB = require('./users.json');
 
-app.get ('/users', function (reg,res){
-	res.status(200).send("Hello JOJO");
+
+
+app.get('/users', function (reg,res){
+	
+	res.type('json').status(200).send(UserDB);
+	
 	
 	
 });
 
 app.get('/users/:id', function (req,res){
 	
-	res.status(200).send("Hello User ID:"+req.params.id);
+	var user = UserDB.filter(function(obj){
+		
+		return obj.id == req.params.id
+		
+	})[0];
+
+if (user != null)
+	res.type('json').status(200).send(user);
+else
+	res.status(404).send("Not Found");
 	
 });
 
